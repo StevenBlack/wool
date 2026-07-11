@@ -126,43 +126,7 @@ async fn md_file() -> Result<Response<Body>, hyper::Error> {
         </script> "#);
     }
     
-    
     Ok(response.body(Body::from(contents)).expect("invalid response builder"))
-}
-
-// Will only serve files relative to the md file
-async fn static_file(req: Request<Body>) -> Result<Response<Body>, hyper::Error> {
-    let response = Response::builder();
-    let cwd = std::env::current_dir().expect("no working dir");
-    if req.uri().path().len() > 1 {
-        let mut fullpath = cwd.clone();
-        // path() contains preceeding forward slash: /some/web/page
-                    println!("{:?}, {:?}", fullpath, &req.uri());
-        fullpath.push(&req.uri().path()[1..]);
-        // canonicalize returns Err if path does not exist.
-        if let Ok(fullpath) = fullpath.canonicalize() {
-            if fullpath.starts_with(&cwd) {
-                if let Ok(_file) = File::open(&fullpath).await {
-                    let buf = String::new();
-                    //if file.read_to_string(&mut buf).await.is_ok() {
-                        return Ok(response
-                            .body(Body::from(buf))
-                            .expect("invalid response builder"));
-                    //}
-                }
-            }
-        }
-    }
-   
-    info!("{} not found", req.uri());
-    // not found  
-    //return Ok(Response::default())
-   // return Ok(response.body(Body::from(req.uri())).expect("invalid response builder"))
-        
-    return Ok(response
-        .body(Body::from("foo"))
-        .expect("invalid response builder"))
-        
 }
 
 async fn router(updaters: SenderListPtr, req: Request<Body> ) -> Result<Response<Body>, hyper::error::Error> {
