@@ -89,7 +89,6 @@ container new-discussion-timeline experiment-repo-nav\"> -->
 }
 
 pub fn format_boilerplate_no_preview(_filename: &str) -> String {
-    format!(
 "
 <!DOCTYPE html>
 <html>
@@ -163,7 +162,7 @@ pub fn format_boilerplate_no_preview(_filename: &str) -> String {
     </style>
   <body>
     <article class=\"markdown-body\"> 
- ")
+ ".to_string()
 }
 
 /*

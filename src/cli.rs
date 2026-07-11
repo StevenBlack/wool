@@ -1,6 +1,6 @@
 use clap::{App, Arg, ArgMatches};
 
-pub fn get_cli_matches<'a>() -> ArgMatches<'static> {
+pub fn get_cli_matches() -> ArgMatches<'static> {
     App::new("ynot")
         .version("0.1")
         .author("m")

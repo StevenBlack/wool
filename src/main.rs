@@ -136,7 +136,7 @@ async fn router(updaters: SenderListPtr, req: Request<Body> ) -> Result<Response
           
 
             let root = Path::new("");
-             let result = resolve_path(&root, &req.uri().path()).await.unwrap();
+             let result = resolve_path(&root, req.uri().path()).await.unwrap();
              
              match result {
         ResolveResult::MethodNotMatched => return Ok(method_not_allowed()),
@@ -198,7 +198,7 @@ fn spawn_watcher(updaters: SenderListPtr) -> notify::Result<RecommendedWatcher> 
     // it forks of a mio event loop in the background and then calls the provided closure
     // with the yielded events
     let cwd = env::current_dir().unwrap(); 
-    let md_file_name = cwd.join(&(matches.value_of("infile").unwrap())).to_owned(); 
+    let md_file_name = cwd.join(matches.value_of("infile").unwrap());
     let mut file_event_watcher: RecommendedWatcher =
         Watcher::new_immediate(move |event: notify::Result<Event>| {
             let event = match event {
@@ -343,17 +343,19 @@ async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
 
 
 fn set_opts() -> ComrakOptions {
-    let mut options = ComrakOptions::default();
-    options.unsafe_ = true;
-    options.github_pre_lang = true;
-    options.ext_table = true;
-    options.ext_tagfilter = true;
-    options.ext_strikethrough = true;
-    options.ext_footnotes = true;
-    options.ext_superscript = true;
-    options.ext_autolink = true;
-    options.ext_tasklist = true;
-    options.ext_description_lists = true;
-    options
+    ComrakOptions {
+        unsafe_ : true,
+        github_pre_lang : true,
+        ext_table : true,
+        ext_tagfilter : true,
+        ext_strikethrough : true,
+        ext_footnotes : true,
+        ext_superscript : true,
+        ext_autolink : true,
+        ext_tasklist : true,
+        ext_description_lists : true,
+        ..Default::default()
+    }
+
 }
 

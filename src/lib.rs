@@ -16,16 +16,17 @@ pub fn github_markdown_to_html(md: String, filename: String) -> String {
 }
 
 fn set_opts() -> ComrakOptions {
-    let mut options = ComrakOptions::default();
-    options.unsafe_ = true;
-    options.github_pre_lang = true;
-    options.ext_table = true;
-    options.ext_tagfilter = true;
-    options.ext_strikethrough = true;
-    options.ext_footnotes = true;
-    options.ext_superscript = true;
-    options.ext_autolink = true;
-    options.ext_tasklist = true;
-    options.ext_description_lists = true;
-    options
+    comrak::ComrakOptions {
+        unsafe_: true,
+        github_pre_lang: true,
+        ext_table: true,
+        ext_tagfilter: true,
+        ext_strikethrough: true,
+        ext_footnotes: true,
+        ext_superscript: true,
+        ext_autolink: true,
+        ext_tasklist: true,
+        ext_description_lists: true,
+        ..Default::default()
+    }
 }
