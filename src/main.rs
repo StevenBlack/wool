@@ -2,7 +2,6 @@ use comrak::{markdown_to_html, ComrakOptions};
 use std::fs;
 use std::fs::File as Sync_File;
 use std::io::Write;
-use std::io::Error;
 use url::Url;
 use log::{info, debug, error};
 use std::path::Path;
@@ -24,11 +23,7 @@ use notify::{Event, EventKind, RecommendedWatcher, RecursiveMode, Watcher};
 use tokio_fs::File;
 // use tokio_io::AsyncReadExt;
 use tokio_sync::oneshot::{self, Sender};
-use tokio_sync::*;
-use tokio::*;
-use tokio_fs::*;
 use tokio_io::*;
-use tokio_sync::*;
 use tokio::io::AsyncReadExt;
 
 mod cli;
@@ -40,7 +35,7 @@ mod katex;
 type SenderListPtr = Arc<Mutex<Vec<Sender<()>>>>;
 
 async fn update(updaters: SenderListPtr) -> Result<Response<Body>, hyper::Error> {
-    let mut response = Response::builder();
+    let response = Response::builder();
     /*
     response.header("Cache-Control", "no-cache, no-store, must-revalidate");
     response.header("Pragma", "no-cache");
@@ -61,7 +56,7 @@ async fn update(updaters: SenderListPtr) -> Result<Response<Body>, hyper::Error>
 }
 
 async fn md_file() -> Result<Response<Body>, hyper::Error> {
-    let mut response = Response::builder();
+    let response = Response::builder();
     // response.header("Content-type", "text/html");
     
     let matches = cli::get_cli_matches();
@@ -137,7 +132,7 @@ async fn md_file() -> Result<Response<Body>, hyper::Error> {
 
 // Will only serve files relative to the md file
 async fn static_file(req: Request<Body>) -> Result<Response<Body>, hyper::Error> {
-    let mut response = Response::builder();
+    let response = Response::builder();
     let cwd = std::env::current_dir().expect("no working dir");
     if req.uri().path().len() > 1 {
         let mut fullpath = cwd.clone();
@@ -147,8 +142,8 @@ async fn static_file(req: Request<Body>) -> Result<Response<Body>, hyper::Error>
         // canonicalize returns Err if path does not exist.
         if let Ok(fullpath) = fullpath.canonicalize() {
             if fullpath.starts_with(&cwd) {
-                if let Ok(mut file) = File::open(&fullpath).await {
-                    let mut buf = String::new();
+                if let Ok(_file) = File::open(&fullpath).await {
+                    let buf = String::new();
                     //if file.read_to_string(&mut buf).await.is_ok() {
                         return Ok(response
                             .body(Body::from(buf))
@@ -281,7 +276,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
     let markdown = markdown_to_html(&contents, &options);
     let highlight = matches.is_present("highlight");
     let browser = matches.is_present("browser");
-    let latex = matches.is_present("katex");
+    let _latex = matches.is_present("katex");
 
     if matches.is_present("export-flag") {
         let infile = matches.value_of("infile").unwrap();
