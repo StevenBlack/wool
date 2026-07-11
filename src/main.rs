@@ -137,7 +137,7 @@ async fn router(updaters: SenderListPtr, req: Request<Body> ) -> Result<Response
           
 
             let root = Path::new("");
-             let result = hyper_staticfile::resolve_path(&root, &req.uri().path()).await.unwrap();
+             let result = resolve_path(&root, &req.uri().path()).await.unwrap();
              
              match result {
         ResolveResult::MethodNotMatched => return Ok(method_not_allowed()),
@@ -147,7 +147,7 @@ async fn router(updaters: SenderListPtr, req: Request<Body> ) -> Result<Response
         _ => (),
     };
              
-                Ok(hyper_staticfile::ResponseBuilder::new().request(&req).build(result).unwrap())
+                Ok(ResponseBuilder::new().request(&req).build(result).unwrap())
 
         }
     }
