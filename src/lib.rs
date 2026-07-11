@@ -1,5 +1,5 @@
 use comrak::{markdown_to_html, ComrakOptions};
-mod template;
+pub mod template;
 
 pub fn github_markdown_to_html(md: String, filename: String) -> String {
     let mut contents = String::from("");

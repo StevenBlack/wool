@@ -22,12 +22,12 @@ use notify::{Event, EventKind, RecommendedWatcher, RecursiveMode, Watcher};
 
 // use tokio_io::AsyncReadExt;
 use tokio_sync::oneshot::{self, Sender};
-use tokio_io::*;
 use tokio::io::AsyncReadExt;
+
+use wool::template;
 
 mod cli;
 mod prism;
-mod template;
 mod openurl;
 mod katex;
 
